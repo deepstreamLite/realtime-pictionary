@@ -5,33 +5,44 @@ const ds = require('../services/ds')
 Vue.component('page', {
   template: `
 <div>
-    <div>
-    <div class="username-modal" v-if="loggedIn=false" @close="loggedIn=true">
+    <div class="username-modal" v-if="newUser" @close="newUser = false">
         <form class="user-login" action="#" v-on:submit.prevent="storeUsername">
             <input class="username-input" v-model="username" type="text" />
         </form>
     </div>
     <canvas id="draw" width="500px" height="500px"></canvas>
-    </div>
-  <board></board>
-  <chat></chat>
+  <board v:bind="record"></board>
+  <chatv:bind="record"></chat>
 </div>`,
   data: function() {
     return {
-        loggedIn: false,
+        newUser: true,
         username: '',
-        isCurrentDrawer: false
+        isCurrentDrawer: false,
+        users: [],
+        record: ds.record.getRecord('state')
     }
   },
 
   created: function() {
-      this.record = ds.record.getRecord('users')
+
    },
 
    methods: {
        storeUsername: function() {
-           console.log(this.$data.username);
-           this.$data.loggedIn = true;
+           console.log(this.record);
+           this.$data.record.whenReady(() => {
+               this.$data.users = this.record.get('users') || [];
+
+               if(this.$data.users.length ===0) {
+                   this.$data.record.set('users', [this.$data.username])
+                   this.$data.isCurrentDrawer = true;
+               } else {
+                   this.$data.users.push(this.$data.username)
+                   this.$data.record.set('users', this.$data.users)
+               }
+               this.$data.newUser = false;
+           })
        }
    }
 });

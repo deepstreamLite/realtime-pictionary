@@ -16,9 +16,7 @@ Vue.component( 'board', {
 			username: ''
 		}
 	},
-	created: function() {
-		this.record = ds.record.getRecord('users');
-	},
+
 	mounted: function() {
 		this.canvas = $(this.$el).find('#draw')[0];
 		this.sign = this.canvas.getContext('2d');
