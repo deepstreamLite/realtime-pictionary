@@ -36,6 +36,7 @@ Vue.component('chat', {
       this.list.on('entry-added', id => {
         ds.record.snapshot(id, (error, data) => {
           this.$data.messages.push(data)
+          console.log(data);
         })
       })
  },
