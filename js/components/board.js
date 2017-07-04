@@ -2,13 +2,13 @@ const client = require('../services/ds')
 
 Vue.component( 'board', {
 	template: `
-<div>
+<div v-if="!newUser">
   <canvas id="draw" width="500px" height="500px"></canvas>
   <div class="submissions">
   </div>
 </div>`,
 
-	props: ['isCurrentDrawer', 'stateRecord'],
+	props: ['isCurrentDrawer', 'record', 'newUser'],
 
 	data: function() {
 		return {
@@ -29,6 +29,10 @@ Vue.component( 'board', {
 	},
 
 	methods: {
+		setRecord: function(record) {
+			console.log('board');
+			console.log(record);
+		},
 		intialiseReceiver () {
 			client.event.subscribe('line', ({ x, y }) => {
 			    this.sign.lineTo(x, y)

@@ -10,8 +10,8 @@ Vue.component('page', {
             <input class="username-input" v-model="username" type="text" />
         </form>
     </div>
-  <board v:bind="record"></board>
-  <chat v:bind="record"></chat>
+  <board :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></board>
+  <chat :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></chat>
 </div>`,
   data: function() {
     return {
@@ -29,7 +29,6 @@ Vue.component('page', {
 
    methods: {
        storeUsername: function() {
-           console.log(this.record);
            this.$data.record.whenReady(() => {
                this.$data.users = this.record.get('users') || [];
 
@@ -41,6 +40,7 @@ Vue.component('page', {
                    this.$data.record.set('users', this.$data.users)
                }
                this.$data.newUser = false;
+               this.$emit('recordReady', this.$data.record)
            })
        }
    }
