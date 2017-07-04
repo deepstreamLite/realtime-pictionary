@@ -19,11 +19,6 @@ Vue.component('board', {
 		this.canvas = $(this.$el).find('#draw')[0];
 		this.sign = this.canvas.getContext('2d');
 		this.signArea = $('#draw');
-		if (this.record.get('drawer') === this.username) {
-			this.initialiseDrawer()
-		} else {
-			this.intialiseReceiver()
-		}
 
 		this.record.subscribe('drawer', (drawer) => {
 			if (drawer === this.username) {
@@ -72,6 +67,17 @@ Vue.component('board', {
 		},
 
 	 	initialiseDrawer () {
+	 		const words = this.$data.record.get('words')
+      const answer = Math.random() * (words.length - 0) + 0
+      ds.rpc.provide('verify-guess', ({ guess, username }, response) => {
+      	response.send()
+        if (guess === answer) {
+          console.log('Correct answer')
+          this.record.set('drawer', username)
+          return
+        }
+        console.log('Wrong guess', guess)
+      })
 	 		this.isGamemaster = true
 	 		this.signArea
 				.on('mousedown', this.startSignature.bind(this))
@@ -99,6 +105,7 @@ Vue.component('board', {
 		},
 
 		deregisterDrawer () {
+			ds.rpc.unprovide('verify-guess')
 			this.signArea.off('mousemove')
 			this.signArea.off('mousedown')
 			this.signArea.off('mouseup')
