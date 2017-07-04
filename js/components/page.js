@@ -33,17 +33,6 @@ Vue.component('page', {
           console.log('Is the gamemaster')
           this.$data.record.set('users', [this.$data.username])
           this.$data.record.set('drawer', this.$data.username)
-          const words = this.$data.record.get('words')
-          const answer = Math.random() * (words.length - 0) + 0
-          ds.rpc.provide('verify-guess', ({ guess, username }, response) => {
-            if (guess === answer) {
-              console.log('Correct answer')
-              this.record.set('drawer', username)
-              return
-            }
-            console.log('Wrong guess', guess)
-            response.send()
-          })
           this.$data.isCurrentDrawer = true;
         } else {
           console.log('Is a normal player', this.$data.users)
