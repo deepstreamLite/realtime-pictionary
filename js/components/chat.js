@@ -25,7 +25,7 @@ Vue.component('chat', {
   data: function() {
     return {
       messages: [
-        { text: '', author: '' }
+        { text: '', username: '' }
       ],
       msg: ''
     }
