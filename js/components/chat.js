@@ -23,13 +23,13 @@ Vue.component('chat', {
   props: ['record', 'newUser', 'username'],
 
   data: function() {
-      return {
-          messages: [
-              { text: '', author: '' }
-          ],
-          msg: ''
-      }
-  },
+    return {
+      messages: [
+        { text: '', author: '' }
+      ],
+      msg: ''
+    }
+},
 
   mounted: function() {
       console.log(this.record, 'chats');
@@ -40,8 +40,9 @@ Vue.component('chat', {
           this.$data.messages.push({
               text: this.$data.msg,
               author: this.username + ':'
-          })
-          this.$data.msg = '';
+          });
+          this.$data.msg = ''
       }
   }
+
 })

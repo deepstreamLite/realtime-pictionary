@@ -7,6 +7,8 @@ Vue.component('page', {
 <div>
     <div class="username-modal" v-if="newUser" @close="newUser = false">
         <form class="user-login" action="#" v-on:submit.prevent="storeUsername">
+            <label class="title">username</label>
+            <br>
             <input class="username-input" v-model="username" type="text" />
         </form>
     </div>
