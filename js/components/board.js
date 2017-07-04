@@ -20,13 +20,13 @@ Vue.component('board', {
 	},
 
 	mounted: function() {
-		console.log('mounted', this.record, this.username)
+		// console.log('mounted', this.record, this.username)
 		this.canvas = $(this.$el).find('#draw')[0];
 		this.sign = this.canvas.getContext('2d');
 		this.signArea = $('#draw');
 
 		this.record.subscribe('drawer', (drawer) => {
-			console.log('drawer', drawer, 'initial', this.initial, 'gamemaster', this.isGamemaster)
+			// console.log('drawer', drawer, 'initial', this.initial, 'gamemaster', this.isGamemaster)
 			if (drawer === this.username) {
 				if (this.initial) {
 					this.initialiseDrawer()
@@ -34,16 +34,16 @@ Vue.component('board', {
 					this.deregisterReceiver()
 					this.initialiseDrawer()
 				}
-				console.log('You are the new gamemaster')
+				// console.log('You are the new gamemaster')
 			} else {
 				if (this.initial) {
-					console.log('Normal user')
+					// console.log('Normal user')
 					this.intialiseReceiver()
 				} else if (this.isGamemaster) {
 					this.deregisterDrawer()
 					this.intialiseReceiver()
 				} else {
-					console.log('You\'re still not gamemaster')
+					// console.log('You\'re still not gamemaster')
 				}
 			}
 			this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -79,17 +79,17 @@ Vue.component('board', {
 	 		const words = this.record.get('words')
       const answer = words[ Math.floor(Math.random() * (words.length - 0)) ];
 	  this.$data.answer = answer;
-      console.log('Correct answer is', answer)
+      // console.log('Correct answer is', answer)
 
       ds.rpc.provide('verify-guess', ({ text, author }, response) => {
-      	console.log('verify-guess', text, 'from', author)
+      	// console.log('verify-guess', text, 'from', author)
       	response.send()
         if (text === answer) {
-          console.log('Correct answer')
+          // console.log('Correct answer')
           this.record.set('drawer', author)
           return
         }
-        console.log('Wrong guess', text)
+        // console.log('Wrong guess', text)
       })
 	 		this.isGamemaster = true
 	 		this.signArea
@@ -118,7 +118,7 @@ Vue.component('board', {
 		},
 
 		deregisterDrawer () {
-			console.log('deregisterDrawer')
+			// console.log('deregisterDrawer')
 			ds.rpc.unprovide('verify-guess')
 			this.signArea.off('mousemove')
 			this.signArea.off('mousedown')

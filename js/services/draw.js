@@ -13,7 +13,7 @@ function moveSignature(e) {          //draws the signature in the canvas//
     signArea.on('mousemove', function(e) {
         sign.lineTo(e.offsetX, e.offsetY);
         sign.stroke();
-        console.log(e.offsetX, e.offsetY);
+        // console.log(e.offsetX, e.offsetY);
 
     })
 }
