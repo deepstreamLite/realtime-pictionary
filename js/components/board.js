@@ -8,7 +8,7 @@ Vue.component( 'board', {
   </div>
 </div>`,
 
-	props: ['isCurrentDrawer'],
+	props: ['isCurrentDrawer', 'stateRecord'],
 
 	data: function() {
 		return {
@@ -17,8 +17,8 @@ Vue.component( 'board', {
 		}
 	},
 	created: function() {
-		this.record = ds.record.getRecord('users');
 	},
+
 	mounted: function() {
 		this.canvas = $(this.$el).find('#draw')[0];
 		this.sign = this.canvas.getContext('2d');
@@ -65,7 +65,6 @@ Vue.component( 'board', {
 		  this.signArea.on('mousemove', function(e) {
 				sign.lineTo(e.offsetX, e.offsetY)
 				sign.stroke()
-				console.log(e.offsetX, e.offsetY)
 		  })
 		},
 
