@@ -11,5 +11,10 @@ const record = ds.record.getRecord('state').whenReady((record) => {
       "platypus","queen","roller","round","shallow","skate","ski","song","spare","spring",
       "state","teapot","thief","toast","treasure","trip","wax","whisk","whistle"
     ];
-  record.set({})
+  record.set({
+    words: WORD_LIST,
+    drawer: null,
+    users: [],
+    messages: []
+  })
 })

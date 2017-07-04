@@ -12,9 +12,10 @@ Vue.component('page', {
             <input class="username-input" v-model="username" type="text" />
         </form>
     </div>
-  <board :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></board>
-  <chat :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></chat>
+  <board v-if="!newUser" :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></board>
+  <chat v-if="!newUser" :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></chat>
 </div>`,
+
   data: function() {
     return {
         newUser: true,
@@ -25,33 +26,39 @@ Vue.component('page', {
     }
   },
 
-  created: function() {
+  methods: {
+    storeUsername: function() {
+      this.$data.record.whenReady(() => {
+        this.$data.users = this.record.get('users') || []
 
-   },
-
-   methods: {
-       storeUsername: function() {
-           this.$data.record.whenReady(() => {
-            //this.record.set('users', [])
-               this.$data.users = this.record.get('users') || [];
-
-               if(this.$data.users.length === 0) {
-                  console.log('Is the gamemaster')
-                  this.$data.record.set('users', [this.$data.username])
-                  this.$data.record.set('drawer', this.$data.username)
-                   this.$data.isCurrentDrawer = true;
-               } else {
-                  console.log('Is a normal player', this.$data.users)
-                  if (this.$data.users.indexOf(this.$data.username) !== -1) {
-                    console.log('Name is already in use, choose another')
-                    return
-                  }
-                  this.$data.users.push(this.$data.username)
-                  this.$data.record.set('users', this.$data.users)
-               }
-               this.$data.newUser = false;
-               this.$emit('recordReady', this.$data.record)
-           })
-       }
-   }
-});
+        if (this.$data.users.length === 0) {
+          console.log('Is the gamemaster')
+          this.$data.record.set('users', [this.$data.username])
+          this.$data.record.set('drawer', this.$data.username)
+          const words = this.$data.record.get('words')
+          const answer = Math.random() * (words.length - 0) + 0
+          ds.rpc.provide('verify-guess', ({ guess, username }, response) => {
+            if (guess === answer) {
+              console.log('Correct answer')
+              this.record.set('drawer', username)
+              return
+            }
+            console.log('Wrong guess', guess)
+            response.send()
+          })
+          this.$data.isCurrentDrawer = true;
+        } else {
+          console.log('Is a normal player', this.$data.users)
+          if (this.$data.users.indexOf(this.$data.username) !== -1) {
+            console.log('Name is already in use, choose another')
+            alert(`Please choose a different name, ${this.$data.username} is already in use`)
+            return
+          }
+          this.$data.users.push(this.$data.username)
+          this.$data.record.set('users', this.$data.users)
+        }
+        this.$data.newUser = false
+      })
+    }
+  }
+})
