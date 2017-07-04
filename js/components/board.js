@@ -1,7 +1,8 @@
 const ds = require('../services/ds')
 
-Vue.component( 'demo', {
+Vue.component( 'board', {
 	template: `
+<<<<<<< HEAD:js/components/demo.js
 		<div>
 			<div class="username-modal" v-if="loggedIn=false" @close="loggedIn=true">
 				<form class="user-login" action="#" v-on:submit.prevent="storeUsername">
@@ -11,6 +12,14 @@ Vue.component( 'demo', {
 			<canvas id="draw" width="500px" height="500px"></canvas>
 		</div>
 	`,
+=======
+<div>
+  <canvas id="draw" width="500px" height="500px"></canvas>
+  <div class="submissions">
+    <form action="#" >
+  </div>
+</div>`,
+>>>>>>> 3ce5bbb5afb4c14e32644a2e53c1f2299c2dd27f:js/components/board.js
 	data: function() {
 		return {
 			loggedIn: false,
@@ -21,6 +30,7 @@ Vue.component( 'demo', {
 		this.record = ds.record.getRecord('users');
 	},
 	mounted: function() {
+		console.log('hell othere')
 		this.canvas = $(this.$el).find('#draw')[0];
 		this.sign = this.canvas.getContext('2d');
 		this.signArea = $('#draw');
