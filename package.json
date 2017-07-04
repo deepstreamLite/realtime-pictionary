@@ -1,0 +1,14 @@
+{
+  "name": "vue-demo-template",
+  "version": "1.0.0",
+  "description": "Vue Demo Template",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --progress --colors"
+  },
+  "dependencies": {
+    "deepstream.io-client-js": "latest",
+    "vue": "latest"
+  }
+}
