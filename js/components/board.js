@@ -16,8 +16,6 @@ Vue.component( 'board', {
 			username: ''
 		}
 	},
-	created: function() {
-	},
 
 	mounted: function() {
 		this.canvas = $(this.$el).find('#draw')[0];

@@ -26,7 +26,6 @@ Vue.component('chat', {
         { text: 'hello there', author: 'Dave' }
       ],
       msg: ''
-    }
   },
 
   mounted: function() {
