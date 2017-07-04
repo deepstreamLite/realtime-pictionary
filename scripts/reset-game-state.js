@@ -11,5 +11,8 @@ const record = ds.record.getRecord('state').whenReady((record) => {
       "platypus","queen","roller","round","shallow","skate","ski","song","spare","spring",
       "state","teapot","thief","toast","treasure","trip","wax","whisk","whistle"
     ];
+    const WORD_INDEX = WORD_LIST.length -1;
+    const WORD = WORD_LIST[WORD_INDEX];
+    console.log(WORD);
   record.set({})
 })
