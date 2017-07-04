@@ -12,8 +12,12 @@ Vue.component( 'board', {
 
 	data: function() {
 		return {
-
+			loggedIn: false,
+			username: ''
 		}
+	},
+	created: function() {
+		this.record = ds.record.getRecord('users');
 	},
 	mounted: function() {
 		this.canvas = $(this.$el).find('#draw')[0];

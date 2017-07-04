@@ -1,6 +1,7 @@
 
 Vue.component('chat', {
   template: `
+<<<<<<< HEAD
 <form id="demo">
   <!-- text -->
   <p>
@@ -12,4 +13,4 @@ Vue.component('chat', {
 
     }
   }
-});
+})

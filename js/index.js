@@ -1,3 +1,4 @@
+
 const page = require('./components/page')
 
 var app = new Vue({
