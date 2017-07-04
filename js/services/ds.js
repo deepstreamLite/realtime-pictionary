@@ -1,3 +1,3 @@
 const deepstream = require('deepstream.io-client-js')
 module.exports =
- deepstream('wss://154.deepstreamhub.com?apiKey=06c21ccd-daf4-4c84-9332-38f471ac3c93').login(console.log)
+ deepstream('wss://154.deepstreamhub.com?apiKey=c74c5785-fc34-4054-b5dd-7ba56b352728').login(console.log)

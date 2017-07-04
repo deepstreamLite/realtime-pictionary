@@ -18,7 +18,7 @@ Vue.component('chat', {
   </form>
 </div>`,
 
-  props: ['stateRecord'],
+  props: ['record'],
 
   data: function() {
     return {
@@ -26,9 +26,6 @@ Vue.component('chat', {
         { text: 'hello there', author: 'Dave' }
       ],
       msg: ''
-  },
-
-  mounted: function() {
-    this.messages = stateRecord.get('messages')
+    }
   }
 })
