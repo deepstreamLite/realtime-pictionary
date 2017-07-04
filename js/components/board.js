@@ -86,7 +86,7 @@ Vue.component('board', {
 				user = users[ Math.floor(Math.random() * (words.length - 0)) ]
 			}
 			return user
-		}
+		},
 
 		cycleGameMaster () {
 			const user = this.getRandomUser()
