@@ -34,8 +34,6 @@ Vue.component('board', {
 
 			ds.event.subscribe('end', ({ x, y}) => {
 			    this.signArea.off('mousemove');
-			    var dataURL = canvas.toDataURL();
-			    hiddenFile.val(dataURL);
 			})
 		},
 
