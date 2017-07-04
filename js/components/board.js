@@ -27,7 +27,7 @@ Vue.component('board', {
 
 		this.record.subscribe('drawer', (drawer) => {
 			if (!this.initial) {
-				alert(drawer, 'guessed the answer as', this.record.get('last-guess'))
+				alert(`${drawer} guessed the answer as ${this.record.get('last-guess')}`)
 			}
 			if (drawer === this.username) {
 				if (this.initial) {
