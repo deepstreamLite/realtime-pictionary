@@ -52,10 +52,6 @@ Vue.component('board', {
 	},
 
 	methods: {
-		setRecord: function(record) {
-			console.log('board');
-			console.log(record);
-		},
 		intialiseReceiver () {
 			this.isGamemaster = false
 			ds.event.subscribe('line', ({ x, y }) => {
@@ -79,18 +75,34 @@ Vue.component('board', {
 			ds.event.unsubscribe('start')
 		},
 
+		getRandomUser () {
+			const users = this.record.get('users')
+			let user = users[ Math.floor(Math.random() * (users.length - 0)) ]
+			while (user === this.username) {
+				user = users[ Math.floor(Math.random() * (users.length - 0)) ]
+			}
+			return user
+		},
+
+		cycleGameMaster () {
+			const user = this.getRandomUser()
+			console.log('Cycling gamemaster to', user)
+			this.record.set('drawer', username)
+		},
+
 	 	initialiseDrawer () {
 	 		const words = this.record.get('words')
       const answer = words[ Math.floor(Math.random() * (words.length - 0)) ];
 	  this.$data.answer = answer;
       console.log('Correct answer is', answer)
 
-      ds.rpc.provide('verify-guess', ({ text, username }, response) => {
-      	console.log('verify-guess', text, 'from', username)
+      ds.rpc.provide('verify-guess', ({ text, author }, response) => {
+      	console.log('verify-guess', text, 'from', author)
       	response.send()
         if (text === answer) {
+        	clearTimeout(this.cycleGameMasterTimeout)
           console.log('Correct answer')
-          this.record.set('drawer', username)
+          this.record.set('drawer', author)
           return
         }
         console.log('Wrong guess', text)
@@ -99,6 +111,11 @@ Vue.component('board', {
 	 		this.signArea
 				.on('mousedown', this.startSignature.bind(this))
 				.on('mouseup', this.removeListener.bind(this))
+
+			console.log('initialising cycleGameMasterTimeout')
+			this.cycleGameMasterTimeout = setTimeout(() => {
+				this.cycleGameMaster()
+			}, 5000)
 	 	},
 
 		startSignature: function(e) {

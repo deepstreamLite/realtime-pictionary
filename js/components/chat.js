@@ -6,7 +6,7 @@ Vue.component('chat', {
   <div class="answer-box">
   <ul id="messages">
     <li v-for="message in messages">
-    <em>{{ message.author }}</em>
+    <em>{{ message.author }}:</em>
       {{ message.text }}
     </li>
   </ul>
@@ -45,7 +45,7 @@ Vue.component('chat', {
       submitAnswer: function() {
           var message = {
               text: this.$data.msg,
-              author: this.username + ':'
+              author: this.username
           }
           const id = Math.random().toString()
           const record = ds.record.getRecord(id)
