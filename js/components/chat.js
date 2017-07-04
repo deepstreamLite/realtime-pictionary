@@ -15,6 +15,7 @@ Vue.component('chat', {
   <form id="submit-answer" action="#" v-on:submit.prevent="submitAnswer">
     <p>
       <input type="text" v-model="msg">
+      <br>
       <label>Submit your answer!</label>
     </p>
   </form>
