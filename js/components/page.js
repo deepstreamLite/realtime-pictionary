@@ -10,8 +10,8 @@ Vue.component('page', {
             <input class="username-input" v-model="username" type="text" />
         </form>
     </div>
-  <board :record="record" :username="username" v-if="!newUser"></board>
-  <chat :record="record" v-if="!newUser"></chat>
+  <board :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></board>
+  <chat :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></chat>
 </div>`,
   data: function() {
     return {

@@ -2,7 +2,7 @@ const ds = require('../services/ds')
 
 Vue.component('board', {
 	template: `
-<div>
+<div v-if="!newUser">
   <canvas id="draw" width="500px" height="500px"></canvas>
 </div>`,
 
@@ -44,6 +44,10 @@ Vue.component('board', {
 	},
 
 	methods: {
+		setRecord: function(record) {
+			console.log('board');
+			console.log(record);
+		},
 		intialiseReceiver () {
 			this.isGamemaster = false
 			ds.event.subscribe('line', ({ x, y }) => {
