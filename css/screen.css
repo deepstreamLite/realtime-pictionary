@@ -35,12 +35,11 @@ body{
 
 .message-board {
 	float: right;
+	margin-right: 50px
 }
 
 .input-box {
-	position: absolute;
-	bottom: 50px;
-	right: 5%;
+
 }
 
 #messages {
@@ -48,10 +47,8 @@ body{
 }
 
 .answer-box {
-	position: absolute;
+	position: relative;
 	text-align: left;
-	bottom: 70px;
-	right: 5%;
     width: 300px;
 	overflow: auto;
 	height: 500px;
@@ -81,4 +78,18 @@ body{
 #board {
 	margin-top: 50px;
 	margin-left: 50px;
+	display: inline;
+}
+
+.answer {
+	position: fixed;
+	top: 15px;
+	left: 15px;
+	font-size: 30px;
+	color: rgba(71,34,165, .7);
+}
+
+.gamebox {
+	margin-top: 70px;
+	text-align: top;
 }

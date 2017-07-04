@@ -12,8 +12,10 @@ Vue.component('page', {
             <input class="username-input" v-model="username" type="text" />
         </form>
     </div>
+    <div class="gamebox">
   <board v-if="!newUser" :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></board>
   <chat v-if="!newUser" :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></chat>
+  </div>
 </div>`,
 
   data: function() {

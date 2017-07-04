@@ -3,8 +3,8 @@ const ds = require('../services/ds')
 Vue.component('board', {
 	template: `
 <div id=board>
-	<div v-if="isGamemaster">
-		<span>{{answer}}</span>
+	<div v-if="isGamemaster" @close="isGamemaster = false">
+		<span class="answer">You are drawing {{answer}}</span>
 	</div>
   <canvas id="draw" width="500px" height="500px"></canvas>
 </div>`,
@@ -82,7 +82,7 @@ Vue.component('board', {
 	 	initialiseDrawer () {
 	 		const words = this.record.get('words')
       const answer = words[ Math.floor(Math.random() * (words.length - 0)) ];
-
+	  this.$data.answer = answer;
       console.log('Correct answer is', answer)
 
       ds.rpc.provide('verify-guess', ({ text, username }, response) => {

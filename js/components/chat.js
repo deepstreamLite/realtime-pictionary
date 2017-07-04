@@ -15,6 +15,7 @@ Vue.component('chat', {
   <form id="submit-answer" action="#" v-on:submit.prevent="submitAnswer">
     <p>
       <input type="text" v-model="msg">
+      <label>Submit your answer!</label>
     </p>
   </form>
   </div>
@@ -57,7 +58,9 @@ Vue.component('chat', {
       },
 
       checkAnswer: function(message) {
-          ds.rpc.make('verify-guess', message, () => {});
+          ds.rpc.make('verify-guess', message, () => {
+
+          });
       }
   }
 
