@@ -52,10 +52,6 @@ Vue.component('board', {
 	},
 
 	methods: {
-		setRecord: function(record) {
-			console.log('board');
-			console.log(record);
-		},
 		intialiseReceiver () {
 			this.isGamemaster = false
 			ds.event.subscribe('line', ({ x, y }) => {
@@ -85,12 +81,12 @@ Vue.component('board', {
 
       console.log('Correct answer is', answer)
 
-      ds.rpc.provide('verify-guess', ({ text, username }, response) => {
-      	console.log('verify-guess', text, 'from', username)
+      ds.rpc.provide('verify-guess', ({ text, author }, response) => {
+      	console.log('verify-guess', text, 'from', author)
       	response.send()
         if (text === answer) {
           console.log('Correct answer')
-          this.record.set('drawer', username)
+          this.record.set('drawer', author)
           return
         }
         console.log('Wrong guess', text)
