@@ -5,11 +5,12 @@
 }
 
 body{
-	background-color: #fff;
+	background-color: #e5efff;
 }
 
 #draw {
-	border: 1px solid black
+	border: 3px solid rgba(71,34,165, .7);
+	border-radius: 3px;
 }
 
 .username-modal {
@@ -53,6 +54,10 @@ body{
 	right: 5%;
     width: 300px;
 	overflow: auto;
+	height: 500px;
+	background-color: rgba(71,34,165, .2);
+	border: 3px solid rgba(71,34,165, .7);
+	border-radius: 3px;
 }
 
 #submit-answer input {
@@ -61,9 +66,19 @@ body{
 
 .answer-box ul li {
 	overflow: auto;
+	padding: 5px;
+}
+
+.answer-box ul {
+	overflow-y: scroll;
 }
 
 .title {
 	color: #e5efff;
 	font-size: 24px;
+}
+
+#board {
+	margin-top: 50px;
+	margin-left: 50px;
 }

@@ -25,7 +25,7 @@ Vue.component('chat', {
   data: function() {
     return {
       messages: [
-        { text: '', username: '' }
+        { text: '', author: '' }
       ],
       msg: ''
     }
@@ -45,7 +45,7 @@ Vue.component('chat', {
       submitAnswer: function() {
           var message = {
               text: this.$data.msg,
-              username: this.username
+              author: this.username + ':'
           }
           const id = Math.random().toString()
           const record = ds.record.getRecord(id)
@@ -53,8 +53,8 @@ Vue.component('chat', {
               record.set(message)
               this.list.addEntry(id);
           })
-          this.checkAnswer(message);
           this.$data.msg = '';
+          this.checkAnswer(message);
       },
       checkAnswer: function(message) {
           ds.rpc.make('verify-guess', message);
