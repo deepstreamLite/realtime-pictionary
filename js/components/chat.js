@@ -32,16 +32,31 @@ Vue.component('chat', {
 },
 
   mounted: function() {
-      console.log(this.record, 'chats');
-  },
+      this.list = ds.record.getList('messages');
+      this.list.subscribe('entry-added', id => {
+        ds.record.snapshot(id, (error, data) => {
+          this.$data.messages.push(data)
+        })
+      })
+ },
 
   methods: {
       submitAnswer: function() {
-          this.$data.messages.push({
+          var message = {
               text: this.$data.msg,
-              author: this.username + ':'
-          });
-          this.$data.msg = ''
+              username: this.username
+          }
+          const id = Math.random().toString()
+          const record = ds.record.getRecord(id)
+          record.whenReady((record) =>{
+              record.set(message)
+              this.list.addEntry(id);
+          })
+          this.checkAnswer(message);
+          this.$data.msg = '';
+      },
+      checkAnswer: function(message) {
+          ds.rpc.make('verify-guess', message);
       }
   }
 
