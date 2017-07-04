@@ -67,10 +67,6 @@ Vue.component('board', {
 			ds.event.subscribe('end', ({ x, y}) => {
 			    this.signArea.off('mousemove');
 			})
-
-			this.cycleGameMasterTimeout = setTimeout(() => {
-				cycleGameMaster()
-			}, 60)
 		},
 
 		deregisterReceiver () {
@@ -81,15 +77,16 @@ Vue.component('board', {
 
 		getRandomUser () {
 			const users = this.record.get('users')
-			let user = users[ Math.floor(Math.random() * (words.length - 0)) ]
+			let user = users[ Math.floor(Math.random() * (users.length - 0)) ]
 			while (user === this.username) {
-				user = users[ Math.floor(Math.random() * (words.length - 0)) ]
+				user = users[ Math.floor(Math.random() * (users.length - 0)) ]
 			}
 			return user
 		},
 
 		cycleGameMaster () {
 			const user = this.getRandomUser()
+			console.log('Cycling gamemaster to', user)
 			this.record.set('drawer', username)
 		},
 
@@ -114,6 +111,11 @@ Vue.component('board', {
 	 		this.signArea
 				.on('mousedown', this.startSignature.bind(this))
 				.on('mouseup', this.removeListener.bind(this))
+
+			console.log('initialising cycleGameMasterTimeout')
+			this.cycleGameMasterTimeout = setTimeout(() => {
+				this.cycleGameMaster()
+			}, 5000)
 	 	},
 
 		startSignature: function(e) {
