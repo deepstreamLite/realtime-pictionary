@@ -10,7 +10,8 @@ Vue.component('board', {
 
 	data () {
 		return {
-			isGamemaster: false
+			isGamemaster: false,
+			initial: true
 		}
 	},
 
@@ -21,21 +22,26 @@ Vue.component('board', {
 		this.signArea = $('#draw');
 
 		this.record.subscribe('drawer', (drawer) => {
+			console.log('drawer', drawer)
 			if (drawer === this.username) {
+				if (this.initial) {
+					this.initialiseDrawer()
+				} else {
+					this.deregisterReceiver()
+					this.initialiseDrawer()
+				}
 				console.log('You are the new gamemaster')
-				this.deregisterReceiver()
-				this.initialiseDrawer()
 			} else {
-				if (this.isGamemaster) {
-					console.log('You were gamemaster but no longer are')
-					this.deregisterDrawer()
+				if (this.initial) {
+					console.log('Normal user')
 					this.intialiseReceiver()
 				} else {
 					console.log('You\'re still not gamemaster')
 				}
 				this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
 			}
-		})
+			this.intial = false
+		}, true)
 	},
 
 	methods: {
@@ -67,7 +73,7 @@ Vue.component('board', {
 		},
 
 	 	initialiseDrawer () {
-	 		const words = this.$data.record.get('words')
+	 		const words = this.record.get('words')
       const answer = Math.random() * (words.length - 0) + 0
       ds.rpc.provide('verify-guess', ({ guess, username }, response) => {
       	response.send()
