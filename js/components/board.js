@@ -8,6 +8,12 @@ Vue.component('board', {
 
 	props: ['record', 'username'],
 
+	data () {
+		return {
+			isGamemaster: false
+		}
+	},
+
 	mounted: function() {
 		console.log('mounted', this.record, this.username)
 		this.canvas = $(this.$el).find('#draw')[0];
@@ -18,10 +24,28 @@ Vue.component('board', {
 		} else {
 			this.intialiseReceiver()
 		}
+
+		this.record.subscribe('drawer', (drawer) => {
+			if (drawer === this.username) {
+				console.log('You are the new gamemaster')
+				this.deregisterReceiver()
+				this.initialiseDrawer()
+			} else {
+				if (this.isGamemaster) {
+					console.log('You were gamemaster but no longer are')
+					this.deregisterDrawer()
+					this.intialiseReceiver()
+				} else {
+					console.log('You\'re still not gamemaster')
+				}
+				this.canvas.getContext().clearRect(0, 0, canvas.width, canvas.height);
+			}
+		})
 	},
 
 	methods: {
 		intialiseReceiver () {
+			this.isGamemaster = false
 			ds.event.subscribe('line', ({ x, y }) => {
 			    this.sign.lineTo(x, y)
 			    this.sign.stroke()
@@ -37,7 +61,14 @@ Vue.component('board', {
 			})
 		},
 
+		deregisterReceiver () {
+			ds.event.unsubscribe('line')
+			ds.event.unsubscribe('end')
+			ds.event.unsubscribe('start')
+		},
+
 	 	initialiseDrawer () {
+	 		this.isGamemaster = true
 	 		this.signArea
 				.on('mousedown', this.startSignature.bind(this))
 				.on('mouseup', this.removeListener.bind(this))
@@ -61,6 +92,12 @@ Vue.component('board', {
 		removeListener: function(e) {
 			ds.event.emit('end', { x: e.offsetX, y: e.offsetY })
 		  this.signArea.off('mousemove')
+		},
+
+		deregisterDrawer () {
+			this.signArea.off('mousemove')
+			this.signArea.off('mousedown')
+			this.signArea.off('mouseup')
 		}
 
 	}
