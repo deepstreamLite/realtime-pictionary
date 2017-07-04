@@ -1,9 +1,8 @@
-require( './components/demo') ;
-require('./components/letters');
+const page = require('./components/page')
 
 var app = new Vue({
-    el: '#app',
-    data: {
-        currentView: 'demo'
-    }
-    });
+  el: '#app',
+  data: {
+    currentView: page
+  }
+})

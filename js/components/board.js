@@ -1,19 +1,19 @@
 
-Vue.component( 'demo', {
+Vue.component( 'board', {
 	template: `
-		<div>
-			<canvas id="draw" width="500px" height="500px"></canvas>
-			<div class="submissions">
-				<form action="#" >
-			</div>
-		</div>
-	`,
+<div>
+  <canvas id="draw" width="500px" height="500px"></canvas>
+  <div class="submissions">
+    <form action="#" >
+  </div>
+</div>`,
 	data: function() {
 		return {
 
 		}
 	},
 	mounted: function() {
+		console.log('hell othere')
 		this.canvas = $(this.$el).find('#draw')[0];
 		this.sign = this.canvas.getContext('2d');
 		this.signArea = $('#draw');
