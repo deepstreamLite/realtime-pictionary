@@ -2,24 +2,10 @@ const ds = require('../services/ds')
 
 Vue.component( 'board', {
 	template: `
-<<<<<<< HEAD:js/components/demo.js
 		<div>
-			<div class="username-modal" v-if="loggedIn=false" @close="loggedIn=true">
-				<form class="user-login" action="#" v-on:submit.prevent="storeUsername">
-					<input class="username-input" v-model="username" type="text" />
-				</form>
-			</div>
-			<canvas id="draw" width="500px" height="500px"></canvas>
+		  <canvas id="draw" width="500px" height="500px"></canvas>
 		</div>
 	`,
-=======
-<div>
-  <canvas id="draw" width="500px" height="500px"></canvas>
-  <div class="submissions">
-    <form action="#" >
-  </div>
-</div>`,
->>>>>>> 3ce5bbb5afb4c14e32644a2e53c1f2299c2dd27f:js/components/board.js
 	data: function() {
 		return {
 			loggedIn: false,
