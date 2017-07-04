@@ -87,12 +87,7 @@ Vue.component('board', {
       	// console.log('verify-guess', text, 'from', author)
       	response.send()
         if (text === answer) {
-<<<<<<< HEAD
-          console.log('Correct answer')
           this.record.set('last-guess', text)
-=======
-          // console.log('Correct answer')
->>>>>>> 2ffbf6881ebbba7b754d65a74688ff96dd07ceb2
           this.record.set('drawer', author)
           return
         }
