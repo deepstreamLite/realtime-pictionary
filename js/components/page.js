@@ -34,14 +34,14 @@ Vue.component('page', {
         this.$data.users = this.record.get('users') || []
 
         if (this.$data.users.length === 0) {
-          console.log('Is the gamemaster')
+          // console.log('Is the gamemaster')
           this.$data.record.set('users', [this.$data.username])
           this.$data.record.set('drawer', this.$data.username)
           this.$data.isCurrentDrawer = true;
         } else {
-          console.log('Is a normal player', this.$data.users)
+          // console.log('Is a normal player', this.$data.users)
           if (this.$data.users.indexOf(this.$data.username) !== -1) {
-            console.log('Name is already in use, choose another')
+            // console.log('Name is already in use, choose another')
             alert(`Please choose a different name, ${this.$data.username} is already in use`)
             return
           }
