@@ -26,6 +26,9 @@ Vue.component('board', {
 		this.signArea = $('#draw');
 
 		this.record.subscribe('drawer', (drawer) => {
+			if (!this.initial) {
+				alert(drawer, 'guessed the answer as', this.record.get('last-guess'))
+			}
 			console.log('drawer', drawer, 'initial', this.initial, 'gamemaster', this.isGamemaster)
 			if (drawer === this.username) {
 				if (this.initial) {
@@ -86,6 +89,7 @@ Vue.component('board', {
       	response.send()
         if (text === answer) {
           console.log('Correct answer')
+          this.record.set('last-guess', text)
           this.record.set('drawer', author)
           return
         }
