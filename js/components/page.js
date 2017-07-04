@@ -10,9 +10,10 @@ Vue.component('page', {
             <input class="username-input" v-model="username" type="text" />
         </form>
     </div>
-  <board :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></board>
-  <chat :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></chat>
+  <board v-if="!newUser" :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></board>
+  <chat v-if="!newUser" :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></chat>
 </div>`,
+
   data: function() {
     return {
         newUser: true,
@@ -21,10 +22,6 @@ Vue.component('page', {
         users: [],
         record: ds.record.getRecord('state')
     }
-  },
-
-  created: function() {
-
   },
 
   methods: {
@@ -52,6 +49,7 @@ Vue.component('page', {
           console.log('Is a normal player', this.$data.users)
           if (this.$data.users.indexOf(this.$data.username) !== -1) {
             console.log('Name is already in use, choose another')
+            alert(`Please choose a different name, ${this.$data.username} is already in use`)
             return
           }
           this.$data.users.push(this.$data.username)

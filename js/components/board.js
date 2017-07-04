@@ -2,7 +2,7 @@ const ds = require('../services/ds')
 
 Vue.component('board', {
 	template: `
-<div v-if="!newUser">
+<div>
   <canvas id="draw" width="500px" height="500px"></canvas>
 </div>`,
 
@@ -38,7 +38,7 @@ Vue.component('board', {
 				} else {
 					console.log('You\'re still not gamemaster')
 				}
-				this.canvas.getContext().clearRect(0, 0, canvas.width, canvas.height);
+				this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
 			}
 		})
 	},
