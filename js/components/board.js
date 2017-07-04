@@ -67,12 +67,30 @@ Vue.component('board', {
 			ds.event.subscribe('end', ({ x, y}) => {
 			    this.signArea.off('mousemove');
 			})
+
+			this.cycleGameMasterTimeout = setTimeout(() => {
+				cycleGameMaster()
+			}, 60)
 		},
 
 		deregisterReceiver () {
 			ds.event.unsubscribe('line')
 			ds.event.unsubscribe('end')
 			ds.event.unsubscribe('start')
+		},
+
+		getRandomUser () {
+			const users = this.record.get('users')
+			let user = users[ Math.floor(Math.random() * (words.length - 0)) ]
+			while (user === this.username) {
+				user = users[ Math.floor(Math.random() * (words.length - 0)) ]
+			}
+			return user
+		}
+
+		cycleGameMaster () {
+			const user = this.getRandomUser()
+			this.record.set('drawer', username)
 		},
 
 	 	initialiseDrawer () {
@@ -85,6 +103,7 @@ Vue.component('board', {
       	console.log('verify-guess', text, 'from', author)
       	response.send()
         if (text === answer) {
+        	clearTimeout(this.cycleGameMasterTimeout)
           console.log('Correct answer')
           this.record.set('drawer', author)
           return
