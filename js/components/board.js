@@ -1,27 +1,19 @@
-const client = require('../services/ds')
+const ds = require('../services/ds')
 
-Vue.component( 'board', {
+Vue.component('board', {
 	template: `
 <div v-if="!newUser">
   <canvas id="draw" width="500px" height="500px"></canvas>
-  <div class="submissions">
-  </div>
 </div>`,
 
-	props: ['isCurrentDrawer', 'record', 'newUser'],
-
-	data: function() {
-		return {
-			loggedIn: false,
-			username: ''
-		}
-	},
+	props: ['record', 'username'],
 
 	mounted: function() {
+		console.log('mounted', this.record, this.username)
 		this.canvas = $(this.$el).find('#draw')[0];
 		this.sign = this.canvas.getContext('2d');
 		this.signArea = $('#draw');
-		if (this.isCurrentDrawer) {
+		if (this.record.get('drawer') === this.username) {
 			this.initialiseDrawer()
 		} else {
 			this.intialiseReceiver()
@@ -34,20 +26,18 @@ Vue.component( 'board', {
 			console.log(record);
 		},
 		intialiseReceiver () {
-			client.event.subscribe('line', ({ x, y }) => {
+			ds.event.subscribe('line', ({ x, y }) => {
 			    this.sign.lineTo(x, y)
 			    this.sign.stroke()
 			})
 
-			client.event.subscribe('start', ({ x, y}) => {
+			ds.event.subscribe('start', ({ x, y}) => {
 			    this.sign.beginPath()
 			    this.sign.moveTo(x, y)
 			})
 
-			client.event.subscribe('end', ({ x, y}) => {
+			ds.event.subscribe('end', ({ x, y}) => {
 			    this.signArea.off('mousemove');
-			    var dataURL = canvas.toDataURL();
-			    hiddenFile.val(dataURL);
 			})
 		},
 
@@ -58,6 +48,7 @@ Vue.component( 'board', {
 	 	},
 
 		startSignature: function(e) {
+    	ds.event.emit('start', { x: e.offsetX, y: e.offsetY })
 		  this.sign.beginPath()
 		  this.sign.moveTo(e.offsetX, e.offsetY)
 		  this.moveSignature(this.sign)
@@ -65,12 +56,14 @@ Vue.component( 'board', {
 
 		moveSignature: function(sign, e) {
 		  this.signArea.on('mousemove', function(e) {
+		  	ds.event.emit('line', { x: e.offsetX, y: e.offsetY })
 				sign.lineTo(e.offsetX, e.offsetY)
 				sign.stroke()
 		  })
 		},
 
 		removeListener: function(e) {
+			ds.event.emit('end', { x: e.offsetX, y: e.offsetY })
 		  this.signArea.off('mousemove')
 		}
 
