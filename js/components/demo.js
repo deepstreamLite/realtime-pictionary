@@ -1,17 +1,24 @@
+const ds = require('../services/ds')
 
 Vue.component( 'demo', {
 	template: `
 		<div>
-			<canvas id="draw" width="500px" height="500px"></canvas>
-			<div class="submissions">
-				<form action="#" >
+			<div class="username-modal" v-if="loggedIn=false" @close="loggedIn=true">
+				<form class="user-login" action="#" v-on:submit.prevent="storeUsername">
+					<input class="username-input" v-model="username" type="text" />
+				</form>
 			</div>
+			<canvas id="draw" width="500px" height="500px"></canvas>
 		</div>
 	`,
 	data: function() {
 		return {
-
+			loggedIn: false,
+			username: ''
 		}
+	},
+	created: function() {
+		this.record = ds.record.getRecord('users');
 	},
 	mounted: function() {
 		this.canvas = $(this.$el).find('#draw')[0];
@@ -23,6 +30,12 @@ Vue.component( 'demo', {
 	 },
 
 	 methods: {
+
+		 storeUsername: function() {
+			 console.log(this.$data.username);
+			 this.$data.loggedIn = true;
+		 },
+
 		 startSignature: function(e) {     //finds where to begin the signature//
 		     this.sign.beginPath();
 		     this.sign.moveTo(e.offsetX, e.offsetY);
