@@ -36,7 +36,6 @@ Vue.component('chat', {
       this.list.on('entry-added', id => {
         ds.record.snapshot(id, (error, data) => {
           this.$data.messages.push(data)
-          console.log(data);
         })
       })
  },
@@ -56,8 +55,9 @@ Vue.component('chat', {
           this.$data.msg = '';
           this.checkAnswer(message);
       },
+
       checkAnswer: function(message) {
-          ds.rpc.make('verify-guess', message);
+          ds.rpc.make('verify-guess', message, () => {});
       }
   }
 

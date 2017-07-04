@@ -26,7 +26,7 @@ Vue.component('board', {
 		this.signArea = $('#draw');
 
 		this.record.subscribe('drawer', (drawer) => {
-			console.log('drawer', drawer)
+			console.log('drawer', drawer, 'initial', this.initial, 'gamemaster', this.isGamemaster)
 			if (drawer === this.username) {
 				if (this.initial) {
 					this.initialiseDrawer()
@@ -39,12 +39,15 @@ Vue.component('board', {
 				if (this.initial) {
 					console.log('Normal user')
 					this.intialiseReceiver()
+				} else if (this.isGamemaster) {
+					this.deregisterDrawer()
+					this.intialiseReceiver()
 				} else {
 					console.log('You\'re still not gamemaster')
 				}
-				this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
 			}
-			this.intial = false
+			this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
+			this.initial = false
 		}, true)
 	},
 
@@ -79,15 +82,18 @@ Vue.component('board', {
 	 	initialiseDrawer () {
 	 		const words = this.record.get('words')
       const answer = words[ Math.floor(Math.random() * (words.length - 0)) ];
-	  answer = this.$data.answer;
-      ds.rpc.provide('verify-guess', ({ guess, username }, response) => {
+
+      console.log('Correct answer is', answer)
+
+      ds.rpc.provide('verify-guess', ({ text, username }, response) => {
+      	console.log('verify-guess', text, 'from', username)
       	response.send()
-        if (guess === answer) {
+        if (text === answer) {
           console.log('Correct answer')
           this.record.set('drawer', username)
           return
         }
-        console.log('Wrong guess', guess)
+        console.log('Wrong guess', text)
       })
 	 		this.isGamemaster = true
 	 		this.signArea
@@ -116,6 +122,7 @@ Vue.component('board', {
 		},
 
 		deregisterDrawer () {
+			console.log('deregisterDrawer')
 			ds.rpc.unprovide('verify-guess')
 			this.signArea.off('mousemove')
 			this.signArea.off('mousedown')
