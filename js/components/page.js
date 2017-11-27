@@ -1,6 +1,7 @@
 require('./board')
 require('./chat')
-const ds = require('../services/ds')
+const { deepstream } = require('deepstream.io-client-js')
+const config = require('../../config')
 
 Vue.component('page', {
   template: `
@@ -14,8 +15,8 @@ Vue.component('page', {
         </form>
     </div>
     <div class="gamebox">
-  <board v-if="!newUser" :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></board>
-  <chat v-if="!newUser" :record="record" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></chat>
+  <board v-if="!newUser" :record="record" :ds="ds" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></board>
+  <chat v-if="!newUser" :record="record" :ds="ds" :users="users" :newUser="newUser" :isCurrentDrawer="isCurrentDrawer" :username="username"></chat>
   </div>
 </div>`,
 
@@ -24,33 +25,26 @@ Vue.component('page', {
         newUser: true,
         username: '',
         isCurrentDrawer: false,
-        users: [],
-        record: ds.record.getRecord('state')
+        users: null,
+        record: null,
+        ds: null
     }
   },
 
   methods: {
-    storeUsername: function() {
-      this.$data.record.whenReady(() => {
-        this.$data.users = this.record.get('users') || []
+    storeUsername: async function () {
+      this.$data.ds = deepstream(config.url)
+      await this.$data.ds.login({ username: this.$data.username })
+      this.$data.record = this.$data.ds.record.getRecord('state')
+      this.$data.users = this.$data.ds.record.getList('users')
 
-        if (this.$data.users.length === 0) {
-          // console.log('Is the gamemaster')
-          this.$data.record.set('users', [this.$data.username])
-          this.$data.record.set('drawer', this.$data.username)
-          this.$data.isCurrentDrawer = true;
-        } else {
-          // console.log('Is a normal player', this.$data.users)
-          if (this.$data.users.indexOf(this.$data.username) !== -1) {
-            // console.log('Name is already in use, choose another')
-            alert(`Please choose a different name, ${this.$data.username} is already in use`)
-            return
-          }
-          this.$data.users.push(this.$data.username)
-          this.$data.record.set('users', this.$data.users)
-        }
-        this.$data.newUser = false
-      })
+      await this.$data.record.whenReady()
+      await this.$data.users.whenReady()
+
+      if (this.$data.record.get('gamemaster') === this.$data.username) {
+        this.$data.isCurrentDrawer = true
+      }
+      this.$data.newUser = false
     }
   }
 })

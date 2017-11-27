@@ -1,5 +1,3 @@
-const ds = require('../services/ds')
-
 Vue.component('chat', {
   template: `
 <div class="message-board" v-if="!newUser">
@@ -22,7 +20,7 @@ Vue.component('chat', {
   </div>
 </div>`,
 
-  props: ['record', 'newUser', 'username'],
+  props: ['record', 'newUser', 'username', 'ds'],
 
   data: function() {
     return {
